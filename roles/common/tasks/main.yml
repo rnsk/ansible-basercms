@@ -1,0 +1,25 @@
+---
+- name: Install python-selinux
+  yum: name={{ item }} state=present
+  with_items:
+    - libselinux-python
+    - libsemanage-python
+
+- name: Add repository 'EPEL'
+  yum: name={{ epel_rpm_url }} state=present
+
+- name: Create the GPG key for EPEL
+  rpm_key: key={{ epel_key_url }} state=present
+
+- name: Add repository 'remi'
+  yum: name={{ remi_rpm_url }} state=present
+
+- name: Create the GPG key for remi
+  rpm_key: key={{ remi_key_url }} state=present
+
+- name: Install Git
+  yum: name=git state=present
+
+- name: Set up iptables rules
+  copy: src=iptables-save dest=/etc/sysconfig/iptables
+  notify: restart iptables

@@ -1,0 +1,49 @@
+---
+# baserCMS 情報
+basercms:
+  repo_url: 'https://github.com/baserproject/basercms.git'
+  version_tag: 'basercms-3.0.5.1'
+
+# 書き込み権限を与えるディレクトリ
+chmod_dir:
+  - 'app/tmp'
+  - 'app/Config'
+  - 'app/webroot/files'
+  - 'app/webroot/theme'
+
+# MySQL 情報
+mysql_db:
+  name: basercms
+  username: basercms
+  password: basercms
+
+# Apache
+apache:
+  docroot_dir: '/var/www/basercms'
+  user: 'basercms'
+  group: 'basercms'
+
+# PHP
+php_install:
+  - php
+  - php-cli
+  - php-common
+  - php-gd
+  - php-mbstring
+  - php-mcrypt
+  - php-pdo
+  - php-mysql
+  - php-xml
+  - php-xmlrpc
+
+# php.ini の変更項目
+php_ini:
+  default_charset: 'UTF-8'
+  mbstring_language: 'Japanese'
+  mbstring_internal_encoding: 'UTF-8'
+  date_timezone: 'Asia/Tokyo'
+
+# ポート番号
+http_port: 80
+https_port: 443
+mysql_port: 3306

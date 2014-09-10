@@ -1,0 +1,27 @@
+---
+- name: Install PHP
+  yum: name={{ item }} enablerepo=remi,epel state=present
+  with_items: php_install
+
+- name: Configure PHP
+  template: >
+    src=php.ini.j2
+    dest=/etc/php.ini
+    owner=root
+    group=root
+    mode=644
+    backup=yes
+
+# Composer インストール
+- name: Install composer
+  shell: >
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
+    creates=/usr/local/bin/composer
+
+- name: Rename composer.phar to composer
+  shell: >
+    mv /usr/local/bin/composer.phar /usr/local/bin/composer
+    creates=/usr/local/bin/composer
+
+- name: Make composer executable
+  shell: chmod a+x /usr/local/bin/composer

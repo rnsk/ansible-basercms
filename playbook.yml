@@ -1,0 +1,13 @@
+---
+# 以下コマンドで実行
+# $ ansible-playbook -i hosts playbook.yml
+- name: Install the baserCMS with LAMP
+  hosts: all
+  user: root
+  sudo: yes
+  roles:
+    - { role: common }
+    - { role: apache }
+    - { role: mysql }
+    - { role: php }
+    - { role: basercms }

@@ -1,0 +1,33 @@
+---
+- name: Install Apache
+  yum: name=httpd state=present
+
+- name: Start httpd Service
+  service: name=httpd state=started enabled=yes
+
+- name: Insert iptables rule
+  lineinfile: >
+    dest=/etc/sysconfig/iptables
+    state=present
+    regexp='{{ http_port }}'
+    insertafter='^:OUTPUT '
+    line='-A INPUT -p tcp  --dport {{ http_port }} -j  ACCEPT'
+  notify: restart iptables
+
+- name: Configure httpd file
+  lineinfile: >
+    dest=/etc/httpd/conf/httpd.conf
+    regexp='^DocumentRoot '
+    line='DocumentRoot {{ apache.docroot_dir }}'
+    backrefs=yes
+    state=present
+  notify: restart httpd
+
+- name: Check if selinux is running
+  command: getenforce
+  register: sestatus
+  changed_when: false
+
+- name: Configure SELinux to httpd can sendmail
+  seboolean: name=httpd_can_sendmail state=true persistent=yes
+  when: sestatus.stdout != 'Disabled'

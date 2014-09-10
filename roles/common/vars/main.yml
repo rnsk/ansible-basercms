@@ -1,0 +1,6 @@
+---
+epel_rpm_url: http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+epel_key_url: http://apt.sw.be/RPM-GPG-KEY.dag.txt
+
+remi_rpm_url: http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+remi_key_url: http://rpms.famillecollet.com/RPM-GPG-KEY-remi

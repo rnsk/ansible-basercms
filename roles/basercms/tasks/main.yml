@@ -1,0 +1,51 @@
+---
+- name: Download baserCMS
+  git: >
+    repo={{ basercms.repo_url }}
+    dest=/var/www/basercms
+    version={{ basercms.version_tag }}
+
+- name: Add group
+  group: name={{ apache.group }}
+
+- name: Add user
+  user: >
+    name={{ apache.user }}
+    group={{ apache.group }}
+    home={{ apache.docroot_dir }}
+
+- name: Create baserCMS database
+  mysql_db: >
+    name={{ mysql_db.name }}
+    state=present
+    encoding=utf8
+
+- name: Create baserCMS database user
+  mysql_user: >
+    name={{ mysql_db.username }}
+    password={{ mysql_db.password }}
+    priv={{ mysql_db.name }}.*:ALL host='localhost'
+    state=present
+
+- name: Change ownership of baserCMS
+  file: >
+    path={{ apache.docroot_dir }}
+    owner={{ apache.user }}
+    group={{ apache.group }}
+    state=directory
+    recurse=yes
+
+- name: Change permission of directory
+  file: >
+    path={{ apache.docroot_dir }}/{{ item }}
+    mode=0777
+    state=directory
+    recurse=yes
+  with_items: chmod_dir
+
+- name: Change permission of php session dir
+  file: >
+    path=/var/lib/php/session
+    mode=0777
+    state=directory
+    recurse=yes
