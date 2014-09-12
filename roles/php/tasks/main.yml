@@ -11,6 +11,7 @@
     group=root
     mode=644
     backup=yes
+  notify: restart httpd
 
 # Composer インストール
 - name: Install composer
