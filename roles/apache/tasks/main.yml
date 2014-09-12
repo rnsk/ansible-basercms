@@ -24,10 +24,9 @@
   notify: restart httpd
 
 - name: Check if selinux is running
-  command: getenforce
+  command: getenforce removes=/etc/sysconfig/selinux
   register: sestatus
-  changed_when: false
 
 - name: Configure SELinux to httpd can sendmail
   seboolean: name=httpd_can_sendmail state=true persistent=yes
-  when: sestatus.stdout != 'Disabled'
+  when: sestatus.skipped is not defined and sestatus.stdout != 'Disabled'
